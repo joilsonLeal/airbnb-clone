@@ -1,17 +1,9 @@
 import { useRouter } from "next/router"
 import Footer from "../components/Footer"
 import Header from "../components/Header"
-import { format } from "date-fns"
+import { formatDate } from "../utils/date"
 
 function search() {
-  const formatDate = (date: any) => {
-    try {
-      return format(new Date(String(date)), 'dd MMMM yy')
-    } catch (error) {
-      return format(new Date(), 'dd MMMM yy')
-    }
-  }
-
   const router = useRouter()
 
   const { location, startDate, endDate, noOfGuests = 1 } = router.query
