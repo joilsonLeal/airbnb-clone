@@ -1,9 +1,20 @@
 import { useRouter } from "next/router"
 import Footer from "../components/Footer"
 import Header from "../components/Header"
+import InfoCard from "../components/InfoCard"
 import { formatDate } from "../utils/date"
 
-function search() {
+export async function getServerSideProps() {
+  const searchResults = await fetch('https://www.jsonkeeper.com/b/5NPS').then(res => res.json()).catch(e => console.log)
+
+  return {
+    props: {
+      searchResults: searchResults || []
+    }
+  }
+} 
+
+function search({ searchResults }: any) {
   const router = useRouter()
 
   const { location, startDate, endDate, noOfGuests = 1 } = router.query
@@ -29,6 +40,10 @@ function search() {
             <p className="button">Price</p>
             <p className="button">Rooms and Beds</p>
             <p className="button">More filters</p>
+          </div>
+
+          <div className="flex flex-col">
+            {searchResults.map((item: any, index: number) => <InfoCard key={index} info={item} />) }
           </div>
 
         </section>
