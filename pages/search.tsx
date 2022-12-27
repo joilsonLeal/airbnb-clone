@@ -1,7 +1,9 @@
+import Head from "next/head"
 import { useRouter } from "next/router"
 import Footer from "../components/Footer"
 import Header from "../components/Header"
 import InfoCard from "../components/InfoCard"
+import Map from "../components/Map"
 import { formatDate } from "../utils/date"
 
 export async function getServerSideProps() {
@@ -24,9 +26,15 @@ function search({ searchResults }: any) {
 
   const range = `${formattedStartDate} - ${formattedEndDate}`
 
+  const placeHolder = `${location} | ${range} | ${noOfGuests} guests`
+
   return (
-    <div >
-      <Header placeholder={`${location} | ${range} | ${noOfGuests} guests`} />
+    <div>
+      <Head>
+        <title>{placeHolder}</title>
+      </Head>
+
+      <Header placeholder={`${placeHolder}`} />
 
       <main className="flex">
         <section className="flex-grow pt-14 px-6">
@@ -45,7 +53,10 @@ function search({ searchResults }: any) {
           <div className="flex flex-col">
             {searchResults.map((item: any, index: number) => <InfoCard key={index} info={item} />) }
           </div>
+        </section>
 
+        <section className="hidden xl:inline-flex xl:min-w-[600px]">
+          <Map searchResults={searchResults}/>
         </section>
       </main>
 
